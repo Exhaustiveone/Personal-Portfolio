@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mayank Sharma · Photography, Design, Film</title>
+  <meta name="description" content="Mayank Sharma is a photographer, graphic designer and filmmaker in Jaipur. Three worlds of work: photography, graphic design and film." />
+  <meta name="theme-color" content="#08060d" />
+  <meta property="og:title" content="Mayank Sharma · Photography, Design, Film" />
+  <meta property="og:description" content="Photographer, graphic designer and filmmaker in Jaipur." />
+  <meta property="og:image" content="assets/img/photo/platform-zero.jpg" />
+  <link rel="preload" href="assets/fonts/anybody-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/newsreader-latin-standard-italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2308060d'/%3E%3Ccircle cx='26' cy='32' r='14' fill='%23ff2e4d'/%3E%3Ccircle cx='38' cy='32' r='14' fill='%232b4bff' style='mix-blend-mode:screen'/%3E%3Ccircle cx='32' cy='24' r='14' fill='%23ffb21a' style='mix-blend-mode:screen'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- cursor -->
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__ring"></div>
+    <div class="cursor__dot"></div>
+    <div class="cursor__label"></div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo" aria-label="Mayank Sharma, back to top">
+      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="nav__name">Mayank Sharma</span>
+    </a>
+    <nav class="nav__links" aria-label="Worlds">
+      <a href="#photography" data-world-link="photo"><span>Photography</span></a>
+      <a href="#design" data-world-link="design"><span>Design</span></a>
+      <a href="#film" data-world-link="film"><span>Film</span></a>
+      <a href="#contact"><span>Contact</span></a>
+    </nav>
+    <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="sound-toggle__label">Sound off</span>
+    </button>
+  </header>
+
+  <!-- world dial -->
+  <nav class="dial" aria-label="Jump to a world">
+    <a href="#photography" data-dial="photo"><i></i><span>Photography</span></a>
+    <a href="#design" data-dial="design"><i></i><span>Design</span></a>
+    <a href="#film" data-dial="film"><i></i><span>Film</span></a>
+  </nav>
+
+  <div class="cinebars" aria-hidden="true"><i></i><i></i></div>
+
+  <main id="main">
+    <!-- ================= LANDING ================= -->
+    <section class="hero" id="top">
+      <canvas class="hero__leak" id="leak" aria-hidden="true"></canvas>
+      <div class="hero__fallback" aria-hidden="true"></div>
+
+      <p class="hero__line">Photographer, graphic designer and filmmaker <span class="nowrap">in Jaipur</span></p>
+
+      <h1 class="name" id="name" aria-label="Mayank Sharma">
+        <span class="name__line name__line--1" aria-hidden="true" data-split>Mayank</span>
+        <span class="name__line name__line--2" aria-hidden="true" data-split>Sharma</span>
+        <span class="name__rule" aria-hidden="true"><i></i><b>26.91° N &nbsp; 75.79° E</b><i></i></span>
+      </h1>
+
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs><path id="badgePath" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#badgePath">photography ✦ graphic design ✦ film ✦ </textPath></text>
+        </svg>
+        <span class="badge__core"><i></i><i></i><i></i></span>
+      </div>
+
+      <nav class="portals" aria-label="Choose a world">
+        <a class="portal" href="#photography" data-portal="photo">
+          <span class="portal__img"><img src="assets/img/photo/bridge-midnight-sm.jpg" alt="" /></span>
+          <span class="portal__n">World 01</span>
+          <span class="portal__t">Photography</span>
+        </a>
+        <a class="portal" href="#design" data-portal="design">
+          <span class="portal__img"><img src="assets/img/design/pravah-presents-sm.jpg" alt="" /></span>
+          <span class="portal__n">World 02</span>
+          <span class="portal__t">Graphic design</span>
+        </a>
+        <a class="portal" href="#film" data-portal="film">
+          <span class="portal__img portal__img--film"><b>अहम्</b></span>
+          <span class="portal__n">World 03</span>
+          <span class="portal__t">Filmmaking</span>
+        </a>
+      </nav>
+
+      <button class="sound-pill" id="soundPill" type="button">
+        <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        Turn on sound effects
+      </button>
+    </section>
+
+    <!-- ================= INTRO ================= -->
+    <section class="intro">
+      <p class="intro__text" data-words id="introText"></p>
+    </section>
+
+    <!-- ================= WORLD 01: PHOTOGRAPHY ================= -->
+    <section class="world world--photo" id="photography" data-world="photo">
+      <div class="gate-zoom" data-flood="#ff2e2e" data-prev="#08060d">
+        <div class="gate-zoom__inner">
+          <p class="gate-zoom__k">World 01</p>
+          <h2 class="gate-zoom__word" data-zoom-word>PHOTOGRAPHY</h2>
+          <p class="gate-zoom__s">Light, caught and kept</p>
+        </div>
+      </div>
+      <div class="world__body" data-from="#ff2e2e" data-to="#0c0807">
+        <p class="world__statement" data-words id="photoStatement"></p>
+        <div class="gallery" id="gallery"></div>
+        <div class="wall-text" id="photoRules"></div>
+      </div>
+    </section>
+
+    <!-- ================= WORLD 02: DESIGN ================= -->
+    <section class="world world--design" id="design" data-world="design">
+      <div class="gate-zoom" data-flood="#2b4bff" data-prev="#0c0807">
+        <div class="gate-zoom__inner">
+          <p class="gate-zoom__k">World 02</p>
+          <h2 class="gate-zoom__word" data-zoom-word>DESIGN</h2>
+          <p class="gate-zoom__s">Form follows feeling</p>
+        </div>
+      </div>
+      <div class="world__body" data-from="#2b4bff" data-to="#1a2fd6">
+        <p class="world__statement" data-words id="designStatement"></p>
+
+        <!-- Sierra Innovations -->
+        <div class="job" id="job"></div>
+
+        <!-- Kidureka -->
+        <article class="brand" id="kidureka"></article>
+        <div class="cases" id="cases"></div>
+        <div class="process" id="process"></div>
+
+        <!-- Toppersnotes -->
+        <article class="brand brand--tn" id="toppersnotes"></article>
+
+        <!-- Independent work -->
+        <div class="wall">
+          <header class="wall__head">
+            <h3 class="h-world">Independent work</h3>
+            <p>Festivals, conferences and brands. Everything here, side by side, with the thinking behind each piece.</p>
+          </header>
+          <div class="wall__grid" id="wallGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WORLD 03: FILM ================= -->
+    <section class="world world--film" id="film" data-world="film">
+      <div class="gate-zoom" data-flood="#f4ead6" data-prev="#1a2fd6">
+        <div class="gate-zoom__inner">
+          <p class="gate-zoom__k">World 03</p>
+          <h2 class="gate-zoom__word" data-zoom-word>FILM</h2>
+          <p class="gate-zoom__s">Lights down. Story up.</p>
+        </div>
+      </div>
+      <div class="world__body" data-from="#f4ead6" data-to="#050406">
+        <div class="beam" aria-hidden="true"><canvas id="dust"></canvas></div>
+        <p class="world__statement" data-words id="filmStatement"></p>
+
+        <!-- what I bring -->
+        <div class="crafts">
+          <header class="crafts__head">
+            <h3 class="h-world">Write. Shoot. Cut.</h3>
+            <p>Three crafts, one person. Hire me for any of them, or all three.</p>
+          </header>
+          <div class="crafts__row" id="crafts"></div>
+        </div>
+
+        <!-- opening credits, played by your scroll -->
+        <div class="opening" id="opening">
+          <div class="opening__pin">
+            <div class="opening__screen">
+              <div class="opening__flicker" aria-hidden="true"></div>
+              <div class="opening__beam" aria-hidden="true"></div>
+              <p class="oc" data-oc>A film by Mayank Sharma</p>
+              <p class="oc" data-oc>Shot on the real streets of Jagatpura, Jaipur</p>
+              <p class="oc oc--big" data-oc><span>A film about the self that hides,</span><span>and the self that answers.</span></p>
+              <div class="oc-title" id="ocTitle">
+                <span class="oc-title__deva" id="featureDeva" aria-hidden="true"></span>
+                <h3 class="oc-title__word" id="featureTitle"></h3>
+                <p class="oc-title__status"><i class="rec"></i><span id="featureStatus"></span></p>
+              </div>
+              <div class="opening__flash" aria-hidden="true"></div>
+            </div>
+            <div class="opening__hud" aria-hidden="true"><span>Reel 01</span><span id="ocTc">00:00:00:00</span></div>
+          </div>
+        </div>
+
+        <div class="feature" id="feature">
+          <p class="feature__tagline" id="featureTagline"></p>
+          <div class="feature__body">
+            <p class="feature__logline" id="featureLogline"></p>
+            <div class="feature__stats" id="featureStats"></div>
+            <ol class="feature__chapters" id="featureChapters"></ol>
+            <ul class="feature__notes" id="featureNotes"></ul>
+          </div>
+        </div>
+
+        <!-- writing sample -->
+        <div class="page-sample" id="writing">
+          <header class="ps-head">
+            <p class="ps-k">The writing</p>
+            <h3 class="h-world">Every film starts on a page</h3>
+            <p class="ps-p">The opening of AHAM, exactly as it sits in the final draft. I write with the camera already in my head, so the script is also the first shot list.</p>
+          </header>
+          <div class="ps-stage">
+            <article class="ps-sheet" id="psSheet" aria-label="Screenplay excerpt from AHAM"></article>
+            <ol class="ps-notes" id="psNotes"></ol>
+          </div>
+        </div>
+
+        <div class="slate">
+          <header class="marquee-sign" aria-label="Coming soon">
+            <div class="marquee-sign__board">
+              <span class="marquee-sign__k">Coming soon</span>
+              <h3 class="marquee-sign__t">On the slate</h3>
+              <span class="marquee-sign__k">Three screenplays waiting for their Sundays</span>
+            </div>
+          </header>
+          <div class="posters" id="posters"></div>
+        </div>
+
+        <!-- cinematography -->
+        <div class="eye" id="cinematography">
+          <header class="eye__head">
+            <p class="ps-k">Cinematography</p>
+            <h3 class="h-world">The eye</h3>
+            <p class="ps-p" id="eyeIntro"></p>
+          </header>
+          <div class="frames" id="frames"></div>
+
+          <div class="split" id="split">
+            <div class="split__head">
+              <h4>One frame, two selves</h4>
+              <p>How light tells the story in AHAM. Drag across the frame.</p>
+            </div>
+            <div class="split__stage" id="splitStage" data-cursor="Drag">
+              <img class="split__img split__img--warm" src="assets/img/photo/one-who-watches.jpg" alt="A man sitting alone on a covered footbridge, graded warm and soft" />
+              <div class="split__cold" id="splitCold"><img class="split__img split__img--cold" src="assets/img/photo/one-who-watches.jpg" alt="" /></div>
+              <div class="split__bar" id="splitBar"><i></i></div>
+              <span class="split__tag split__tag--l">Veer<br><em>warm, soft, everywhere</em></span>
+              <span class="split__tag split__tag--r">The Other<br><em>hard, cold, one source</em></span>
+            </div>
+          </div>
+
+          <ul class="kit" id="kit"></ul>
+        </div>
+
+        <!-- reels -->
+        <div class="reels" id="reels">
+          <header class="reels__head">
+            <p class="ps-k">Reels</p>
+            <h3 class="h-world">Shot and edited by me</h3>
+            <p class="ps-p" id="reelsIntro"></p>
+          </header>
+          <div class="reels__row" id="reelsRow"></div>
+          <div class="reels__cta" id="reelsCta"></div>
+        </div>
+
+        <div class="studio" id="studio"></div>
+      </div>
+    </section>
+
+    <!-- ================= TOOLKIT ================= -->
+    <section class="tools" id="tools">
+      <header class="tools__head">
+        <h2 class="h-world">The toolkit</h2>
+        <p>Five tools, used daily. Hover or tap one to see what it does for me.</p>
+      </header>
+      <div class="tools__row" id="toolsRow"></div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="contact" id="contact">
+      <p class="contact__q">Got an event, a shoot, a brief or a story?</p>
+      <h2 class="contact__big" id="rollTitle" aria-label="Let's make it">
+        <span class="name__line name__line--1" aria-hidden="true" data-split>Let's</span>
+        <span class="name__line name__line--2" aria-hidden="true" data-split>make it</span>
+      </h2>
+      <p class="contact__p">Based in Jaipur. Open for events, brand shoots, design work and films, and happy to travel.</p>
+      <div class="contact__ctas">
+        <a class="cta" id="ctaMail" href="#" data-cursor="Write"><span>Email me</span></a>
+        <a class="cta" id="ctaWa" href="#" target="_blank" rel="noopener" data-cursor="Chat"><span>WhatsApp</span></a>
+        <a class="cta" id="ctaIg" href="#" target="_blank" rel="noopener" data-cursor="Follow"><span>Instagram</span></a>
+      </div>
+      <footer class="foot">
+        <span>© <span class="js-year"></span> Mayank Sharma</span>
+        <span>Jaipur, <span class="js-clock"></span> IST</span>
+        <a href="#top">Back to the start</a>
+      </footer>
+    </section>
+  </main>
+
+  <!-- reel player -->
+  <div class="reelbox" id="reelbox" role="dialog" aria-modal="true" aria-label="Reel player" hidden>
+    <div class="reelbox__frame" id="reelboxFrame"></div>
+    <p class="reelbox__cap" id="reelboxCap"></p>
+    <button class="lb-btn lb-close" id="reelboxClose" type="button">Close</button>
+  </div>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <div class="lightbox__flash" aria-hidden="true"></div>
+    <figure class="lightbox__fig">
+      <img id="lbImg" alt="" />
+      <figcaption><span id="lbKind"></span><b id="lbTitle"></b><span id="lbIdx"></span></figcaption>
+    </figure>
+    <button class="lb-btn lb-prev" id="lbPrev" type="button">Previous</button>
+    <button class="lb-btn lb-next" id="lbNext" type="button">Next</button>
+    <button class="lb-btn lb-close" id="lbClose" type="button">Close</button>
+  </div>
+
+  <script src="assets/js/vendor/gsap.min.js"></script>
+  <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/js/vendor/lenis.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/sound.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
