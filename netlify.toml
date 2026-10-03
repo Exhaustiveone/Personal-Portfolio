@@ -1,0 +1,9 @@
+# The site is plain HTML/CSS/JS: no build step, publish the folder as it is.
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
