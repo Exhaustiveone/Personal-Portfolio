@@ -799,6 +799,9 @@ void main(){
     gsap.from(".studio > div:last-child > *", { y: 40, opacity: 0, duration: 1.1, stagger: 0.08, ease: "expo.out", scrollTrigger: { trigger: ".studio", start: "top 65%" } });
     dust();
 
+    // ---- backstage: certificates ----
+    backstageScroll(ST);
+
     // ---- tools ----
     gsap.from(".tool", {
       y: 160, rotateX: -60, opacity: 0, duration: 1.6, ease: "expo.out", stagger: 0.09,
@@ -889,6 +892,158 @@ void main(){
     });
     t.addEventListener("pointerleave", () => { rx(0); ry(0); });
   });
+
+  /* ==================================================================
+     BACKSTAGE: college fest certificates, member to lead
+     ================================================================== */
+  const B = D.backstage;
+  const certSrc = (slug, sm) => `assets/img/certs/${slug}${sm ? "-sm" : ""}.jpg`;
+  const RANKS = ["Member", "Core team", "Lead"];
+  $("#bsKicker").textContent = B.kicker;
+  $("#bsIntro").textContent = B.intro;
+  const bsChars = $$("#bsTitle [data-split]").map(splitChars);
+  $("#bsTable").innerHTML = B.certs.map((c, i) => `
+    <button class="cert cert--${c.shape}" type="button" data-cert="${i}" data-cursor="View" aria-label="${c.event}, ${c.role}, ${c.date}. Open the certificate full size">
+      <span class="cert__jolt">
+        <span class="cert__in">
+          <span class="cert__face cert__front">
+            <img src="${certSrc(c.slug, true)}" srcset="${certSrc(c.slug, true)} 900w, ${certSrc(c.slug)} 1800w" sizes="(min-width: 821px) 46vw, 86vw" alt="" decoding="async" width="${c.shape === "land" ? 900 : 636}" height="${c.shape === "land" ? 636 : 900}">
+            <span class="stamp stamp--r${c.rank}" aria-hidden="true"><span class="stamp__ring"></span><b>${c.stamp[0]}</b><i>${c.stamp[1]}</i></span>
+            <span class="cert__foil" aria-hidden="true"></span>
+          </span>
+          <span class="cert__face cert__back" aria-hidden="true"><b>MS</b><i>${c.event}</i></span>
+        </span>
+      </span>
+      <span class="cert__cap"><b>${c.event}</b><span>${c.role} · ${c.date}</span></span>
+    </button>`).join("");
+  $("#bsInfo").innerHTML = B.certs.map((c, i) => `
+    <div class="bsi" data-info="${i}">
+      <p class="bsi__n"><b>${pad(i + 1)}</b> / ${pad(B.certs.length)} &nbsp;·&nbsp; ${c.date}</p>
+      <h3 class="bsi__event">${c.event}</h3>
+      <p class="bsi__role"><span class="bsi__rank bsi__rank--${c.rank}">${RANKS[c.rank]}</span>${c.role}</p>
+      <p class="bsi__org">${c.org}</p>
+      <p class="bsi__note">${c.note}</p>
+    </div>`).join("") + `
+    <div class="bsi bsi--fin" data-info="${B.certs.length}">
+      <p class="bsi__n">${B.certs[1].date} → ${B.certs[B.certs.length - 1].date}</p>
+      <h3 class="bsi__event">${B.finale}</h3>
+      <p class="bsi__note">Click any certificate to see it full size.</p>
+    </div>`;
+  $(".bs__dots").innerHTML = B.certs.map(() => "<i></i>").join("");
+
+  const certList = () => B.certs.map((c) => ({ src: certSrc(c.slug), title: c.role, kind: `${c.event} · ${c.date}` }));
+  $$(".cert").forEach((b) => {
+    const i = +b.dataset.cert;
+    b.addEventListener("click", () => openLightbox(certList(), i));
+    b.addEventListener("pointerenter", () => sfx("tick", [392, 440, 523.25, 587.33, 659.25][i % 5], 0.07));
+    if (!finePointer) return;
+    b.addEventListener("pointermove", (e) => {
+      const r = b.getBoundingClientRect();
+      const px = clamp((e.clientX - r.left) / r.width, 0, 1), py = clamp((e.clientY - r.top) / r.height, 0, 1);
+      b.style.setProperty("--mx", (px * 100).toFixed(1) + "%");
+      b.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+      b.style.setProperty("--rx", ((0.5 - py) * 16).toFixed(2) + "deg");
+      b.style.setProperty("--ry", ((px - 0.5) * 20).toFixed(2) + "deg");
+    });
+    b.addEventListener("pointerleave", () => { b.style.setProperty("--rx", "0deg"); b.style.setProperty("--ry", "0deg"); });
+  });
+
+  // the climb: cards come off a face-down pile, flip, get stamped, and file into a fan
+  function backstageScroll(ST) {
+    const head = { trigger: ".bs__head", start: "top 72%" };
+    gsap.from(bsChars.flat(), { yPercent: 120, rotate: 10, opacity: 0, duration: 1.3, stagger: 0.035, ease: "expo.out", scrollTrigger: head });
+    gsap.from(".bs__arrow path", { strokeDashoffset: 260, duration: 1.6, delay: 0.25, ease: "expo.inOut", scrollTrigger: head });
+    gsap.from([".bs__k", ".bs__p"], { y: 30, opacity: 0, duration: 1.1, stagger: 0.12, ease: "expo.out", scrollTrigger: head });
+
+    const cards = $$(".cert"), infos = $$(".bsi"), dots = $$(".bs__dots i"), rungs = $$(".bs__ladder li");
+    const n = cards.length;
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 821px)", () => {
+      html.classList.add("bs-live");
+      const W = () => innerWidth, H = () => innerHeight;
+      const heroX = () => W() * 0.07, heroY = () => H() * 0.03;
+      const mid = (n - 1) / 2;
+      // filed cards collect top-left, overlapping like a pile of papers on a desk
+      const fileX = (i) => () => -W() * 0.35 + i * W() * 0.046;
+      const fileY = (i) => () => -H() * 0.2 + (i % 2) * H() * 0.035;
+      const tilt = [-9, 6, -4, 8, -6];
+      const U = 2.6;
+      const fwd = () => tl.scrollTrigger && tl.scrollTrigger.direction === 1;
+
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: ".bs__pin", pin: true, start: "top top", end: () => "+=" + H() * 6.6,
+          scrub: 0.8, invalidateOnRefresh: true, refreshPriority: 1, anticipatePin: 1
+        }
+      });
+
+      gsap.set(cards, { xPercent: -50, yPercent: -50 });
+      gsap.set(infos, { opacity: 0, y: 30 });
+      gsap.set(".bs__ladder", { "--fill": 0 });
+      let lastRank = -1, lastYear = "2024";
+
+      cards.forEach((card, i) => {
+        const c = B.certs[i];
+        const s = 0.4 + i * U;
+        const stamp = $(".stamp", card), ring = $(".stamp__ring", card), jolt = $(".cert__jolt", card);
+        // the pile: face down on the table
+        tl.fromTo(card,
+          { x: () => W() * 0.01 + i * 3, y: () => H() * 0.36 - i * 7, rotationX: 64, rotationY: 180, rotation: tilt[i % 5], scale: 0.46, zIndex: n - i },
+          { x: heroX, y: heroY, rotationX: 0, rotationY: 0, rotation: -1.5, scale: 1, zIndex: 50, duration: 1, ease: "power3.inOut", immediateRender: true }, s);
+        tl.call(() => fwd() && sfx("flip", 420 + i * 70), null, s + 0.02);
+        // caption
+        if (i > 0) tl.to(infos[i - 1], { opacity: 0, y: -30, duration: 0.35 }, s);
+        tl.to(infos[i], { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, s + 0.35);
+        tl.to(dots[i], { opacity: 1, backgroundColor: "#ffb21a", duration: 0.3 }, s + 0.5);
+        // the year in the background
+        if (c.year !== lastYear) {
+          tl.to(".bs__yearstrip", { yPercent: (-100 / 3) * ["2024", "2025", "2026"].indexOf(c.year), duration: 0.8, ease: "power2.inOut" }, s);
+          lastYear = c.year;
+        }
+        // stamp
+        tl.fromTo(stamp, { scale: 3.4, opacity: 0, rotation: -34 }, { scale: 1, opacity: 0.94, rotation: -12, duration: 0.22, ease: "power4.in", immediateRender: true }, s + 1.02);
+        tl.fromTo(ring, { scale: 0.6, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 0.45, ease: "power2.out" }, s + 1.24);
+        tl.fromTo(jolt, { y: 0 }, { y: 14, duration: 0.05, yoyo: true, repeat: 1, ease: "power2.out" }, s + 1.24);
+        tl.call(() => fwd() && sfx(c.rank === 2 ? "braam" : "clap"), null, s + 1.24);
+        // the ladder
+        if (c.rank !== lastRank) {
+          tl.to(".bs__ladder", { "--fill": (c.rank + 1) / 3, duration: 0.4, ease: "power2.out" }, s + 1.24);
+          tl.fromTo(rungs[c.rank], { scale: 1.5, opacity: 0.28 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(3)", immediateRender: false }, s + 1.24);
+          if (lastRank >= 0) tl.to(rungs[lastRank], { opacity: 0.5, duration: 0.3 }, s + 1.3);
+          lastRank = c.rank;
+        }
+        // file it into the fan
+        tl.to(card, { x: fileX(i), y: fileY(i), rotation: -9 + i * 4.5, scale: 0.34, duration: 0.9, ease: "power3.inOut" }, s + 1.75)
+          .set(card, { zIndex: 10 + i }, s + 2.65);
+      });
+
+      // finale: the whole run, opened up
+      const F = 0.4 + n * U;
+      tl.to(infos[n - 1], { opacity: 0, y: -30, duration: 0.35 }, F)
+        .to(infos[n], { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, F + 0.3)
+        .to(cards, { x: (i) => -W() * 0.055 + (i - mid) * Math.min(W() * 0.14, 225), y: (i) => -H() * 0.08 + Math.pow(i - mid, 2) * H() * 0.016, scale: 0.46, rotation: (i) => (i - mid) * 5, duration: 1.1, stagger: 0.05, ease: "power3.inOut" }, F)
+        .to(rungs, { opacity: 1, duration: 0.4 }, F + 0.4)
+        .call(() => fwd() && sfx("chord", [261.63, 329.63, 392, 523.25]), null, F + 0.9)
+        .to({}, { duration: 0.8 });
+
+      return () => html.classList.remove("bs-live");
+    });
+
+    mm.add("(max-width: 820px)", () => {
+      cards.forEach((c) => {
+        const st = { trigger: c, start: "top 85%" };
+        gsap.fromTo($(".cert__in", c), { rotationY: 180, rotationX: 20 }, { rotationY: 0, rotationX: 0, duration: 1.4, ease: "expo.out", scrollTrigger: st });
+        gsap.fromTo(c, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: "expo.out", scrollTrigger: st });
+        gsap.fromTo($(".stamp", c), { scale: 3.2, opacity: 0, rotation: -34 }, {
+          scale: 1, opacity: 0.94, rotation: -12, duration: 0.3, delay: 0.75, ease: "power4.in", scrollTrigger: st,
+          onComplete: () => sfx("clap")
+        });
+      });
+      gsap.from(rungs, { y: 20, opacity: 0, stagger: 0.12, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".bs__ladder", start: "top 85%" } });
+    });
+  }
 
   /* ==================================================================
      LIGHTBOX

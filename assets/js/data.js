@@ -258,6 +258,22 @@ window.SITE = {
     }
   },
 
+  /* ======================= BACKSTAGE: college fest certificates ======================= */
+  // Images live in assets/img/certs/<slug>.jpg (+ <slug>-sm.jpg). Order = the climb, oldest first.
+  // shape: "land" (landscape) or "port" (portrait). rank: 0 member, 1 core team, 2 lead.
+  backstage: {
+    kicker: "Backstage · SKIT, Jaipur",
+    intro: "Before the clients, there were college fests. Five certificates, three fests, two years: from a seat on the team to running the design team.",
+    finale: "Member to lead in twelve months.",
+    certs: [
+      { slug: "ici24-technical", shape: "land", date: "Nov 2024", year: "2024", event: "ICI Fest ’24", org: "SKIT × Indian Concrete Institute", role: "Technical Team", rank: 0, stamp: ["Member", "Tech · 24"], note: "Where it started. A seat on the technical team for a three-day fest." },
+      { slug: "pravah25-design", shape: "port", date: "Feb 2025", year: "2025", event: "Pravah 2025", org: "SKIT, Jaipur", role: "Design Team", rank: 0, stamp: ["Member", "Design · 25"], note: "First time on the design team. Recognised for dedication and creativity." },
+      { slug: "ici25-social", shape: "land", date: "Sep 2025", year: "2025", event: "ICI Fest ’25", org: "SKIT × Indian Concrete Institute", role: "Social Media Team", rank: 0, stamp: ["Member", "Social · 25"], note: "Ran the fest’s social media. Recognised for creativity and consistency." },
+      { slug: "ici25-core", shape: "port", date: "Sep 2025", year: "2025", event: "ICI Fest ’25", org: "SKIT × Indian Concrete Institute", role: "Core Team Member", rank: 1, stamp: ["Core team", "ICI · 25"], note: "Moved up to the core team that ran the fest." },
+      { slug: "pravah26-coordinator", shape: "port", date: "Feb 2026", year: "2026", event: "Pravah 2026", org: "SKIT, Jaipur", role: "Coordinator, Design Team", rank: 2, stamp: ["Lead", "Design · 26"], note: "Led the design team. Exactly a year after joining it." }
+    ]
+  },
+
   /* ======================= TOOLKIT ======================= */
   tools: [
     { key: "ps", name: "Photoshop", maker: "Adobe", use: "Compositing, retouching and every poster on this page.", color: "#4fb4ff" },

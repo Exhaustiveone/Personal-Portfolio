@@ -270,6 +270,43 @@
       </div>
     </section>
 
+    <!-- ================= BACKSTAGE: certificates ================= -->
+    <section class="bs" id="backstage" aria-labelledby="bsTitle">
+      <header class="bs__head">
+        <p class="bs__k" id="bsKicker"></p>
+        <h2 class="bs__title" id="bsTitle" aria-label="Member to lead">
+          <span class="bs__w" aria-hidden="true" data-split>Member</span>
+          <span class="bs__arrow" aria-hidden="true"><svg viewBox="0 0 120 40"><path d="M2 20 H112 M94 4 L114 20 L94 36" /></svg></span>
+          <span class="bs__w bs__w--lead" aria-hidden="true" data-split>Lead</span>
+        </h2>
+        <p class="bs__p" id="bsIntro"></p>
+      </header>
+
+      <div class="bs__pin">
+        <div class="bs__year" aria-hidden="true"><div class="bs__yearstrip"><span>2024</span><span>2025</span><span>2026</span></div></div>
+        <div class="bs__spot" aria-hidden="true"></div>
+        <div class="bs__table" id="bsTable"></div>
+        <div class="bs__info" id="bsInfo" aria-live="polite"></div>
+        <ol class="bs__ladder" aria-label="The climb">
+          <li data-rung="0"><b>Member</b><span>2024</span></li>
+          <li data-rung="1"><b>Core team</b><span>2025</span></li>
+          <li data-rung="2"><b>Lead</b><span>2026</span></li>
+        </ol>
+        <div class="bs__dots" aria-hidden="true"></div>
+      </div>
+
+      <!-- rough ink for the rubber stamps -->
+      <svg class="bs__defs" aria-hidden="true" focusable="false" width="0" height="0">
+        <filter id="inkStamp" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n" />
+          <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.5" result="holes" />
+          <feComposite in="SourceGraphic" in2="holes" operator="in" result="pitted" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3" result="w" />
+          <feDisplacementMap in="pitted" in2="w" scale="3" />
+        </filter>
+      </svg>
+    </section>
+
     <!-- ================= TOOLKIT ================= -->
     <section class="tools" id="tools">
       <header class="tools__head">
