@@ -62,25 +62,76 @@
   $("#designStatement").textContent = D.design.statement;
   $("#filmStatement").textContent = D.film.statement;
 
-  // ---- photography gallery: justified rows at true proportions ----
+  // ---- photography: series, as posted on Instagram. Justified rows at true proportions ----
   const P = D.photography;
   const photoOrder = [];
-  $("#gallery").innerHTML = P.rows
-    .map((row) => {
-      const items = row
-        .map((slug) => {
-          const p = P.photos[slug];
-          const idx = photoOrder.push(slug) - 1;
-          const ratio = p.w / p.h;
-          return `<figure class="plate" style="flex:${ratio.toFixed(4)} 1 0" data-index="${idx}" data-cursor="View" tabindex="0" role="button" aria-label="${p.title}. Open full screen">
-            <div class="plate__frame"><img src="${photoSrc(slug, true)}" srcset="${photoSrc(slug, true)} 1000w, ${photoSrc(slug)} 2200w" sizes="(max-width: 820px) 100vw, 60vw" width="${p.w}" height="${p.h}" alt="${p.title}" loading="lazy" decoding="async"></div>
-            <figcaption><span class="plate__no">Plate ${pad(idx + 1)}</span><span class="plate__t">${p.title}</span><span class="plate__k">${p.kind}</span></figcaption>
-          </figure>`;
-        })
-        .join("");
-      return `<div class="g-row">${items}</div>`;
+  const igPost = (id) => `https://www.instagram.com/p/${id}/`;
+  const plateHTML = (slug) => {
+    const p = P.photos[slug];
+    const idx = photoOrder.push(slug) - 1;
+    const ratio = p.w / p.h;
+    return `<figure class="plate" style="flex:${ratio.toFixed(4)} 1 0" data-index="${idx}" data-cursor="View" tabindex="0" role="button" aria-label="${p.title}. Open full screen">
+      <div class="plate__frame"><img src="${photoSrc(slug, true)}" srcset="${photoSrc(slug, true)} 1000w, ${photoSrc(slug)} 2200w" sizes="(max-width: 820px) 100vw, 45vw" width="${p.w}" height="${p.h}" alt="${p.title}" loading="lazy" decoding="async"></div>
+      <figcaption><span class="plate__no">Plate ${pad(idx + 1)}</span><span class="plate__t">${p.title}</span><span class="plate__k">${p.kind}</span></figcaption>
+    </figure>`;
+  };
+  $("#gallery").innerHTML = P.series
+    .map((se, si) => {
+      const count = se.rows.flat().length;
+      const rows = se.rows.map((row) => `<div class="g-row">${row.map(plateHTML).join("")}</div>`).join("");
+      const verse = se.verse.map((l) => (l ? `<span class="vl">${l}</span>` : `<span class="vl vl--gap"></span>`)).join("");
+      return `
+      <section class="series" id="series-${se.key}" style="--accent:${se.accent}" aria-labelledby="st-${se.key}">
+        <div class="series__ghost" aria-hidden="true"><span>${se.title} · ${se.title} · ${se.title} · </span></div>
+        <header class="series__head">
+          <div class="series__sticky">
+            <p class="series__no"><b>Series ${pad(si + 1)}</b><span>${count} frames · ${se.kind}</span></p>
+            <h3 class="series__t" id="st-${se.key}" data-split>${se.title}</h3>
+            <p class="series__verse">${verse}</p>
+            ${se.ig ? `<a class="series__ig" href="${igPost(se.ig)}" target="_blank" rel="noopener" data-cursor="Open">As posted on Instagram <i>↗</i></a>` : ""}
+          </div>
+        </header>
+        <div class="series__body"><div class="gallery">${rows}</div></div>
+      </section>`;
     })
     .join("");
+  $$(".series__t[data-split]").forEach((t) => {
+    const words = t.textContent.split(" ");
+    t.setAttribute("aria-label", t.textContent);
+    t.innerHTML = words.map((w) => `<span class="sw" aria-hidden="true">${Array.from(w).map((c) => `<span class="char">${c}</span>`).join("")}</span>`).join(" ");
+  });
+
+  // film strip index: one frame per series, plus the trek notebook
+  const TK = P.trek;
+  const stripFrames = P.series.map((se, i) => ({ href: `#series-${se.key}`, src: photoSrc(se.rows[0][0], true), t: se.title, n: pad(i + 1) }))
+    .concat([{ href: "#trek", src: "assets/img/trek/kk-01-sm.jpg", t: "The trek notebook", n: pad(P.series.length + 1), port: true }]);
+  $("#photoStrip").innerHTML = `<div class="strip__film">${stripFrames
+    .map((f) => `<a class="strip__f" href="${f.href}" data-cursor="Go"><span class="strip__img${f.port ? " strip__img--port" : ""}"><img src="${f.src}" alt="" loading="lazy" decoding="async"></span><span class="strip__cap"><b>${f.n}</b>${f.t}</span></a>`)
+    .join("")}</div><p class="strip__code" aria-hidden="true">SHUNYA 400 &nbsp;◂ ${"▪ ".repeat(6)} MAYANK · JAIPUR &nbsp;◂ ${"▪ ".repeat(6)} SHUNYA 400</p>`;
+
+  // the trek notebook: page i's back carries the English line for page i + 1
+  $("#trekTitle").textContent = TK.title;
+  $("#trekEn").textContent = TK.en;
+  $("#trekLine").textContent = TK.line;
+  $("#trekPlace").textContent = TK.place;
+  $("#trekIg").href = igPost(TK.ig);
+  $("#trekTotal").textContent = pad(TK.pages.length);
+  const trekSrc = (i, sm) => `assets/img/trek/kk-${pad(i + 1)}${sm ? "-sm" : ""}.jpg`;
+  $("#trekBook").innerHTML = TK.pages
+    .map((pg, i) => {
+      const next = TK.pages[i + 1];
+      return `<div class="pg" data-pg="${i}" style="z-index:${TK.pages.length - i}">
+        <button class="pg__face pg__front" type="button" data-cursor="View" aria-label="Page ${i + 1}: ${pg.hi} (${pg.en}). Open full size">
+          <img src="${trekSrc(i, true)}" srcset="${trekSrc(i, true)} 720w, ${trekSrc(i)} 1440w" sizes="(max-width: 820px) 80vw, 40vh" width="1440" height="1920" alt="" loading="lazy" decoding="async">
+          <span class="pg__shade" aria-hidden="true"></span>
+        </button>
+        <div class="pg__face pg__back" aria-hidden="true">${next ? `<span class="pg__no">${pad(i + 2)}</span><p class="pg__hi">${next.hi}</p><p class="pg__en">${next.en}</p><span class="pg__rule"></span><span class="pg__sig">Kedarkantha</span>` : ""}</div>
+        <p class="pg__cap"><b>${pg.hi}</b><span>${pg.en}</span></p>
+      </div>`;
+    })
+    .join("");
+  const trekList = () => TK.pages.map((pg, i) => ({ src: trekSrc(i), title: pg.hi, kind: pg.en }));
+
   // trust the file: if a photo is replaced, its true proportions are used automatically
   $$(".plate img").forEach((im) => {
     const fix = () => {
@@ -92,6 +143,7 @@
     };
     im.complete ? fix() : im.addEventListener("load", fix);
   });
+
   $("#photoRules").innerHTML = P.rules.map(([t, d]) => `<div><h4>${t}</h4><p>${d}</p></div>`).join("");
 
   // ---- design ----
@@ -653,6 +705,16 @@ void main(){
     });
     gsap.from(".wall-text > div", { y: 40, opacity: 0, duration: 1.1, stagger: 0.12, ease: "expo.out", scrollTrigger: { trigger: ".wall-text", start: "top 85%" } });
 
+    // ---- photography: series titles, verses, ghost type, film strip ----
+    $$(".series").forEach((se) => {
+      gsap.from($$(".series__t .char", se), { yPercent: 115, opacity: 0, rotate: 8, duration: 1.3, stagger: 0.028, ease: "expo.out", scrollTrigger: { trigger: se, start: "top 72%" } });
+      gsap.from($$(".series__no, .vl, .series__ig", se), { y: 18, opacity: 0, duration: 1.1, stagger: 0.07, ease: "expo.out", scrollTrigger: { trigger: se, start: "top 64%" } });
+      gsap.fromTo($(".series__ghost span", se), { xPercent: 0 }, { xPercent: -33.333, ease: "none", scrollTrigger: { trigger: se, start: "top bottom", end: "bottom top", scrub: true } });
+    });
+    gsap.from(".strip__f", { y: 70, rotate: (i) => (i % 2 ? 5 : -5), opacity: 0, duration: 1.3, stagger: 0.08, ease: "expo.out", scrollTrigger: { trigger: ".strip", start: "top 88%" } });
+    gsap.fromTo(".strip__film", { x: 50 }, { x: -50, ease: "none", scrollTrigger: { trigger: ".strip", start: "top bottom", end: "bottom top", scrub: true } });
+    trekScroll();
+
     // ---- design ----
     gsap.from(".job > *", { y: 60, opacity: 0, duration: 1.2, stagger: 0.1, ease: "expo.out", scrollTrigger: { trigger: ".job", start: "top 80%" } });
     $$(".brand").forEach((b) => {
@@ -893,6 +955,42 @@ void main(){
     t.addEventListener("pointerleave", () => { rx(0); ry(0); });
   });
 
+  /* ---------------- the trek notebook: scroll turns the pages ---------------- */
+  function trekScroll() {
+    const pages = $$(".pg"), n = pages.length, book = $("#trekBook"), now = $("#trekNow");
+    gsap.from([".trek__k", ".trek__t", ".trek__en", ".trek__p", ".trek__meta"], { y: 40, opacity: 0, duration: 1.2, stagger: 0.08, ease: "expo.out", scrollTrigger: { trigger: ".trek__head", start: "top 75%" } });
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 821px)", () => {
+      html.classList.add("trek-live");
+      const T0 = 0.7, flips = n - 1;
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: ".trek__pin", pin: true, start: "top top", end: () => "+=" + innerHeight * (flips * 0.6 + 1.2),
+          scrub: 0.7, invalidateOnRefresh: true, refreshPriority: 25, anticipatePin: 1
+        },
+        // the counter follows the page actually showing (the timeline, not the scrollbar, which runs ahead while scrubbing)
+        onUpdate: () => { now.textContent = pad(1 + clamp(Math.floor(tl.time() - T0 - 0.5) + 1, 0, flips)); }
+      });
+      const fwd = () => tl.scrollTrigger && tl.scrollTrigger.direction === 1;
+      // the closed notebook lands on the desk
+      tl.fromTo(book, { xPercent: -25, rotationX: 38, rotationZ: -6, y: 60, scale: 0.86 }, { rotationX: 0, rotationZ: 0, y: 0, scale: 1, duration: T0, ease: "power2.out", immediateRender: true }, 0);
+      pages.forEach((pg, i) => {
+        if (i >= flips) return;
+        const t = T0 + i;
+        const shade = $(".pg__shade", pg);
+        if (i === 0) tl.to(book, { xPercent: 0, duration: 0.8, ease: "power2.inOut" }, t).to(".trek__hint", { opacity: 0, duration: 0.3 }, t);
+        tl.fromTo(pg, { rotationY: 0 }, { rotationY: -180, duration: 1, ease: "power2.inOut", immediateRender: false }, t)
+          .fromTo(shade, { opacity: 0 }, { opacity: 0.55, duration: 0.45, ease: "power1.in", immediateRender: false }, t)
+          .to(shade, { opacity: 0, duration: 0.2 }, t + 0.5)
+          .set(pg, { zIndex: 100 + i }, t + 0.5)
+          .call(() => fwd() && sfx("flip", 760 - i * 22), null, t + 0.12);
+      });
+      tl.to({}, { duration: 0.6 });
+      return () => html.classList.remove("trek-live");
+    });
+  }
+
   /* ==================================================================
      BACKSTAGE: college fest certificates, member to lead
      ================================================================== */
@@ -1105,7 +1203,11 @@ void main(){
     p.addEventListener("click", open);
     p.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
   });
-  $$(".pin__img").forEach((b) => b.addEventListener("click", () => openLightbox(designList(), +b.closest(".pin").dataset.index)));
+  $$(".pin__img").forEach((b) => b.addEventListener("click", () => {
+    const i = +b.closest(".pin").dataset.index;
+    G.independent[i].trek ? openLightbox(trekList(), 0) : openLightbox(designList(), i);
+  }));
+  $$(".pg__front").forEach((b) => b.addEventListener("click", () => openLightbox(trekList(), +b.closest(".pg").dataset.pg)));
   $$(".sheet[data-kid]").forEach((s) => s.addEventListener("click", () => openLightbox(kidList(), +s.dataset.kid)));
 
   /* ---------------- reels: preview on hover, play in a player ---------------- */

@@ -18,25 +18,74 @@ window.SITE = {
   photography: {
     statement:
       "Every frame is a decision. I shoot events, streets and the roads in between, and I edit warm, a little moody, so it feels like a memory and not a report.",
-    // Rows are laid out edge to edge at the photos' true proportions. Nothing is cropped.
-    // w and h are the real pixel sizes of each file, so the layout never jumps.
-    rows: [
-      ["platform-zero", "waiting-fleet", "devotion-stillness"],
-      ["built-by-time"],
-      ["one-who-watches", "bridge-midnight"],
-      ["rubble-resilience", "echoes-empire"],
-      ["pushkar"]
+    // Photos are grouped into series, the way they were posted on Instagram.
+    // Each series: rows of photo slugs laid out edge to edge at true proportions. Nothing is cropped.
+    // Images live in assets/img/photo/<slug>.jpg (+ <slug>-sm.jpg). w and h update themselves from the real file.
+    series: [
+      {
+        key: "echoes", title: "Echoes of Empire", kind: "Heritage", accent: "#e0874a", ig: "DaQh5EZj-Al",
+        verse: ["A reminder that power fades,", "names are forgotten,", "but craftsmanship outlives kings.", "", "History doesn’t disappear,", "it simply learns to whisper."],
+        rows: [["echoes-cover", "echoes-empire"], ["from-the-ramparts", "built-by-time"]]
+      },
+      {
+        key: "amber", title: "Amber Hours", kind: "Night", accent: "#ffa21a", ig: "DaK6On8DVhU",
+        verse: ["Some nights live in sodium-orange,", "some hands carry the weight of fire.", "", "A quiet workshop, a quieter street,", "both lit the same way memory does."],
+        rows: [["amber-corridor", "hands-fire"], ["workshop-dark", "quieter-street"], ["sodium-cycle", "rust-box"]]
+      },
+      {
+        key: "smoke", title: "Even in Smoke", kind: "Portrait", accent: "#ff5b1f", ig: "DaNjdiIDQZR",
+        verse: ["Even in smoke, there’s a story.", "Sometimes silence says the most."],
+        rows: [["smoke-story", "smoke-silence"]]
+      },
+      {
+        key: "loose", title: "Loose Frames", kind: "Singles", accent: "#ff2e2e", ig: "",
+        verse: ["Not every photograph needs a series.", "These ones stand on their own."],
+        rows: [["platform-zero", "waiting-fleet", "devotion-stillness"], ["one-who-watches", "bridge-midnight"], ["rubble-resilience", "pushkar"]]
+      }
     ],
     photos: {
+      "echoes-cover": { title: "Echoes of Empire", kind: "Heritage", w: 2200, h: 1467 },
+      "echoes-empire": { title: "Craftsmanship Outlives Kings", kind: "Architecture", w: 2200, h: 1478 },
+      "from-the-ramparts": { title: "From the Ramparts", kind: "Landscape", w: 2200, h: 1467 },
+      "built-by-time": { title: "Built by Time", kind: "Street", w: 2200, h: 1467 },
+      "amber-corridor": { title: "Amber Hours", kind: "Night", w: 1024, h: 1365 },
+      "hands-fire": { title: "Hands That Carry Fire", kind: "Documentary", w: 1650, h: 2200 },
+      "workshop-dark": { title: "The Workshop, After Dark", kind: "Documentary", w: 2200, h: 1467 },
+      "quieter-street": { title: "A Quieter Street", kind: "Night", w: 2200, h: 1467 },
+      "sodium-cycle": { title: "Parked in Sodium Light", kind: "Night", w: 2200, h: 1467 },
+      "rust-box": { title: "The Rust Box", kind: "Still life", w: 2200, h: 1467 },
+      "smoke-story": { title: "Even in Smoke", kind: "Portrait", w: 1650, h: 2200 },
+      "smoke-silence": { title: "Silence Says the Most", kind: "Portrait", w: 1650, h: 2200 },
       "platform-zero": { title: "Platform Zero", kind: "Architecture", w: 1463, h: 2048 },
       "waiting-fleet": { title: "The Waiting Fleet", kind: "Travel", w: 2048, h: 1365 },
       "devotion-stillness": { title: "Devotion in Stillness", kind: "Fine art", w: 1365, h: 2048 },
-      "built-by-time": { title: "Built by Time", kind: "Architecture", w: 2200, h: 848 }, // sizes update themselves from the real file
       "one-who-watches": { title: "The One Who Watches", kind: "Street", w: 2048, h: 1365 },
       "bridge-midnight": { title: "The Bridge at Midnight", kind: "Night", w: 1467, h: 2200 },
       "rubble-resilience": { title: "Rubble & Resilience", kind: "Candid", w: 2048, h: 1365 },
-      "echoes-empire": { title: "Echoes of Empire", kind: "Architecture", w: 2048, h: 1638 },
       pushkar: { title: "Pushkar Doesn't Hurry", kind: "Travel", w: 2200, h: 1467 }
+    },
+    // Photography × design: the trek, shot and then designed into a 12-page notebook carousel.
+    // Pages live in assets/img/trek/kk-01.jpg … kk-12.jpg. "en" is the English line printed on the back of each page.
+    trek: {
+      title: "Kya Mila Trekk Karke!!",
+      en: "What did the trek give me?",
+      place: "Kedarkantha, Uttarakhand · 12,500 ft",
+      ig: "DTdJGfCDeq9",
+      line: "I shot the trek, then designed it: twelve pages of a spiral notebook, one feeling per page. It lives in both worlds, because it was made in both.",
+      pages: [
+        { hi: "Kya Mila Trekk Karke!!", en: "What did the trek give me?" },
+        { hi: "Ese Raaste Mile!", en: "Trails like these." },
+        { hi: "Ese Ghar Mile!", en: "Homes like these." },
+        { hi: "Unn Gharo se ese Nazare Mile!", en: "And views like these, from those homes." },
+        { hi: "Esi Raate Milli!", en: "Nights like these." },
+        { hi: "Ese Pahad Mile!", en: "Mountains like these." },
+        { hi: "Esi Valley Milli!", en: "A valley like this." },
+        { hi: "Ye Cuteness Milli!", en: "This much cuteness." },
+        { hi: "Esa Saath Mila!", en: "Company like this." },
+        { hi: "Esa Emotional Moment Mila!", en: "A moment like this one." },
+        { hi: "12,500 ft. Summit Conquer Karne ki Khushi Milli", en: "The joy of a 12,500 ft summit." },
+        { hi: "Start to End Feeling of Contentment!", en: "Start to end: contentment." }
+      ]
     },
     rules: [
       ["Show up first", "The camera comes out after I've watched for a while."],
@@ -127,6 +176,8 @@ window.SITE = {
 
     // "motive" is the one or two lines on why the piece looks the way it does
     independent: [
+      { slug: "kedarkantha", title: "Kya Mila Trekk Karke!!", kind: "Instagram carousel", w: 1440, h: 1920, trek: true,
+        motive: "My own photos, designed into a spiral notebook: one Hinglish line per page, so a 12-slide trek reads like a diary. Also in the photography world." },
       { slug: "pravah-presents", title: "Pravah '25 Presents", kind: "Event branding", w: 1800, h: 1274,
         motive: "Five artists, one wall. The ornate festive frame keeps a celebrity line-up feeling like Pravah, not a generic concert ad." },
       { slug: "pravah-domains", title: "Pravah Major Domains", kind: "Poster", w: 1277, h: 1800,
