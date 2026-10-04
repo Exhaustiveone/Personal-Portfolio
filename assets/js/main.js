@@ -969,10 +969,10 @@ void main(){
           trigger: ".trek__pin", pin: true, start: "top top", end: () => "+=" + innerHeight * (flips * 0.6 + 1.2),
           scrub: 0.7, invalidateOnRefresh: true, refreshPriority: 25, anticipatePin: 1
         },
-        // the counter follows the page actually showing (the timeline, not the scrollbar, which runs ahead while scrubbing)
-        onUpdate: () => { now.textContent = pad(1 + clamp(Math.floor(tl.time() - T0 - 0.5) + 1, 0, flips)); }
       });
       const fwd = () => tl.scrollTrigger && tl.scrollTrigger.direction === 1;
+      const tick = () => { const v = pad(1 + clamp(Math.floor(tl.time() - T0 - 0.5) + 1, 0, flips)); if (now.textContent !== v) now.textContent = v; };
+      gsap.ticker.add(tick);
       // the closed notebook lands on the desk
       tl.fromTo(book, { xPercent: -25, rotationX: 38, rotationZ: -6, y: 60, scale: 0.86 }, { rotationX: 0, rotationZ: 0, y: 0, scale: 1, duration: T0, ease: "power2.out", immediateRender: true }, 0);
       pages.forEach((pg, i) => {
@@ -987,7 +987,7 @@ void main(){
           .call(() => fwd() && sfx("flip", 760 - i * 22), null, t + 0.12);
       });
       tl.to({}, { duration: 0.6 });
-      return () => html.classList.remove("trek-live");
+      return () => { gsap.ticker.remove(tick); html.classList.remove("trek-live"); };
     });
   }
 
